@@ -1,0 +1,28 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+# Paso 1 — Mostrar inicio del build
+- script: echo "Iniciando proceso de build..."
+  displayName: "Inicio"
+
+# Paso 2 — Crear carpeta de artefactos
+- script: |
+    mkdir -p $(Build.ArtifactStagingDirectory)
+    echo "Preparando artefactos..."
+  displayName: "Preparar artefactos"
+
+# Paso 3 — Copiar archivos (de ejemplo)
+- script: |
+    echo "Este archivo será parte del artefacto" > $(Build.ArtifactStagingDirectory)/info.txt
+  displayName: "Crear archivo de artefacto"
+
+# Paso 4 — Publicar artefacto
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'drop'
+  displayName: "Publicar artefactos"
